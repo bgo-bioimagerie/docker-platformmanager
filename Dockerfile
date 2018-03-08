@@ -32,3 +32,7 @@ ENV MYSQL_URL="http://mysql:8080/" \
     MYSQL_DBNAME="platformmanager" \
     MYSQL_USER="username" \
     MYSQL_PASS="password" \
+
+ADD entrypoint.sh
+
+CMD ["/entrypoint.sh"]
