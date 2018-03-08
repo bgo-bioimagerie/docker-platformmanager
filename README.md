@@ -17,9 +17,8 @@ services:
         MYSQL_DBNAME: platformmanager # name of the database on the mysql server
         MYSQL_USER: admin@platformmanager # Admin account to connect to mysql
         MYSQL_PASS: password # Password to connect to mysql
-
     volumes:
-
+      - ./data/platformmanager:/var/www/platformmanager/data/ # Mount the application data directory
     ports:
       - "3000:80"
 ```

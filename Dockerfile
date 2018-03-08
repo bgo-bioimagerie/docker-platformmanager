@@ -16,7 +16,7 @@ ENTRYPOINT ["/usr/local/bin/tini", "--"]
 
 WORKDIR /var/www
 
-VOLUME ["/data/platformmanager/"]
+VOLUME ["/var/www/platformmanager/data"]
 
 # Install packages and PHP-extensions
 RUN apt-get -q update && \
