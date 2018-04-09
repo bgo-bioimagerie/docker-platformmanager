@@ -9,4 +9,6 @@ sed -i 's/MYSQL_PASS/${MYSQL_PASS}/g' /var/www/platformmanager/Config/conf.ini
 
 exec apache2-foreground
 
+curl http://localhost/update
+
 exit 1
