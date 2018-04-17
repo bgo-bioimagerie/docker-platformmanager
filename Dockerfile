@@ -23,10 +23,10 @@ RUN apt-get -q update && \
     && DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install
 
 # install Platform-Manager sources
-RUN wget https://github.com/bgo-bioimagerie/platformmanager/archive/V1.0.tar.gz
-  && tar -xzvf V1.0.tar.gz \
-  && cp V1.0 /var/www/platformmanager \
-  && rm -rf V1.0.tar.gz V1.0
+RUN wget https://github.com/bgo-bioimagerie/platformmanager/archive/V1.1.tar.gz
+  && tar -xzvf V1.1.tar.gz \
+  && cp V1.1 /var/www/platformmanager \
+  && rm -rf V1.1.tar.gz V1.1
 
 ENV MYSQL_URL="http://mysql:8080/" \
     MYSQL_DBNAME="platformmanager" \
