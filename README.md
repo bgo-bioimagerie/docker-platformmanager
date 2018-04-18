@@ -13,7 +13,7 @@ services:
   report:
     image: quay.io/bgo_bioimagerie/platformmanager:latest
     environment:
-        MYSQL_URL: http://mysql:8080/ # Full URL to the mysql server
+        MYSQL_HOST: mysql # Host of the mysql server
         MYSQL_DBNAME: platformmanager # name of the database on the mysql server
         MYSQL_USER: admin@platformmanager # Admin account to connect to mysql
         MYSQL_PASS: password # Password to connect to mysql

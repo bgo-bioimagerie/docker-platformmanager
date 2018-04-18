@@ -32,7 +32,7 @@ RUN wget https://github.com/bgo-bioimagerie/platformmanager/archive/V1.1.tar.gz 
   && rm -rf html \
   && ln -s platformmanager html
 
-ENV MYSQL_URL="http://mysql:8080/" \
+ENV MYSQL_HOST="mysql" \
     MYSQL_DBNAME="platformmanager" \
     MYSQL_USER="username" \
     MYSQL_PASS="password"
