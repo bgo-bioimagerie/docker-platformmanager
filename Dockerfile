@@ -21,7 +21,8 @@ VOLUME ["/var/www/platformmanager/data"]
 
 # Install packages and PHP-extensions
 RUN apt-get -q update && \
-    DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install wget nano
+    DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install wget nano && \
+    docker-php-ext-install pdo pdo_mysql
 
 # install Platform-Manager sources
 RUN wget https://github.com/bgo-bioimagerie/platformmanager/archive/V1.1.tar.gz \
