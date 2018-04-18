@@ -28,7 +28,7 @@ RUN wget https://github.com/bgo-bioimagerie/platformmanager/archive/V1.1.tar.gz 
   && tar -xzvf V1.1.tar.gz \
   && cp -r platformmanager-1.1/* /var/www/platformmanager \
   && rm -rf V1.1.tar.gz platformmanager-1.1 \
-  && chown -R www-data: platformmanager-1.1 \
+  && chown -R www-data: platformmanager \
   && rm -rf html \
   && ln -s platformmanager html
 
