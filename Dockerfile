@@ -27,8 +27,8 @@ RUN apt-get -q update && \
 # install Platform-Manager sources
 RUN wget https://github.com/bgo-bioimagerie/platformmanager/archive/V1.1.tar.gz \
   && tar -xzvf V1.1.tar.gz \
-  && cp V1.1 /var/www/platformmanager \
-  && rm -rf V1.1.tar.gz V1.1
+  && cp platformmanager-1.1 /var/www/platformmanager \
+  && rm -rf V1.1.tar.gz platformmanager-1.1
 
 ENV MYSQL_URL="http://mysql:8080/" \
     MYSQL_DBNAME="platformmanager" \
