@@ -11,7 +11,7 @@ We highly recommend using a `docker-compose.yml` to run your containers.
 version: "2"
 services:
   report:
-    image: quay.io/sylvainprigent/platformmanager:latest
+    image: quay.io/bgo_bioimagerie/platformmanager:latest
     environment:
         MYSQL_URL: http://mysql:8080/ # Full URL to the mysql server
         MYSQL_DBNAME: platformmanager # name of the database on the mysql server
