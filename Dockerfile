@@ -29,6 +29,7 @@ RUN apt-get -q update && \
 RUN wget https://github.com/bgo-bioimagerie/platformmanager/archive/V1.2.tar.gz \
   && tar -xzvf V1.2.tar.gz \
   && cp -r platformmanager-1.2/* /var/www/platformmanager \
+  && cp platformmanager-1.2/.htaccess /var/www/platformmanager \
   && rm -rf V1.2.tar.gz platformmanager-1.2 \
   && mkdir platformmanager/tmp \
   && chown -R www-data: platformmanager \
