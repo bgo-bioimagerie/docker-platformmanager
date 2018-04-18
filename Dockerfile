@@ -36,4 +36,6 @@ ENV MYSQL_URL="http://mysql:8080/" \
 
 ADD entrypoint.sh /
 
+RUN chmod a+x /entrypoint.sh
+
 CMD ["/entrypoint.sh"]
