@@ -24,7 +24,9 @@ RUN apt-get -q update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install wget nano at && \
     docker-php-ext-install pdo pdo_mysql mysqli && \
     a2enmod rewrite && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    touch /var/log/php_errors.log && \
+    chown www-data /var/log/php_errors.log
 
 ADD php_logs.ini /usr/local/etc/php/conf.d/php_logs.ini
 
