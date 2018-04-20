@@ -27,4 +27,4 @@ sleep 2
 
 curl http://localhost/update
 
-wait
+tail -f /var/log/apache2/*log
