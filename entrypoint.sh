@@ -11,8 +11,10 @@ sed -i "s/MYSQL_PASS/${MYSQL_PASS}/g" /var/www/platformmanager/Config/conf.ini
 unset MYSQL_USER
 unset MYSQL_PASS
 
-exec apache2-foreground
+exec apache2 &
+
+sleep 2
 
 curl http://localhost/update
 
-exit 1
+wait
