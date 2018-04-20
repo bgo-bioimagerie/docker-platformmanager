@@ -29,6 +29,7 @@ RUN apt-get -q update && \
     chown www-data /var/log/php_errors.log
 
 ADD php_logs.ini /usr/local/etc/php/conf.d/php_logs.ini
+ADD apache2/platformmanager.conf /etc/apache2/conf-enabled/platformmanager.conf
 
 # install Platform-Manager sources
 RUN wget https://github.com/bgo-bioimagerie/platformmanager/archive/V1.2.tar.gz \
