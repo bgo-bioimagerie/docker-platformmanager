@@ -34,7 +34,9 @@ RUN wget https://github.com/bgo-bioimagerie/platformmanager/archive/V1.2.tar.gz 
   && mkdir platformmanager/tmp \
   && chown -R www-data: platformmanager \
   && rm -rf html \
-  && ln -s platformmanager html
+  && ln -s platformmanager html \
+  && mkdir -p /etc/platformmanager \
+  && cp platformmanager/Config/conf.ini.sample /etc/platformmanager/
 
 ENV MYSQL_HOST="mysql" \
     MYSQL_DBNAME="platformmanager" \
