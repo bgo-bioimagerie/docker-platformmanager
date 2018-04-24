@@ -22,11 +22,17 @@ VOLUME ["/var/www/platformmanager/data"]
 # Install packages and PHP-extensions
 RUN apt-get -q update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install wget nano at && \
-    docker-php-ext-install pdo pdo_mysql mysqli && \
+    docker-php-ext-install pdo pdo_mysql mysqli git && \
     a2enmod rewrite && \
     rm -rf /var/lib/apt/lists/* && \
     touch /var/log/php_errors.log && \
     chown www-data /var/log/php_errors.log
+
+RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
+    && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
+    && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { unlink('/tmp/composer-setup.php'); echo 'Invalid installer' . PHP_EOL; exit(1); }" \
+    && php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer --snapshot \
+    && rm -f /tmp/composer-setup.*
 
 ADD php_logs.ini /usr/local/etc/php/conf.d/php_logs.ini
 ADD apache2/platformmanager.conf /etc/apache2/conf-enabled/platformmanager.conf
@@ -43,6 +49,10 @@ RUN wget https://github.com/bgo-bioimagerie/platformmanager/archive/V1.2.tar.gz 
   && ln -s platformmanager html \
   && mkdir -p /etc/platformmanager \
   && cp platformmanager/Config/conf.ini.sample /etc/platformmanager/
+
+RUN cd /var/www/platformmanager/externals/html2pdf \
+  && composer install \
+  && cd /var/www/
 
 ENV MYSQL_HOST="mysql" \
     MYSQL_DBNAME="platformmanager" \
