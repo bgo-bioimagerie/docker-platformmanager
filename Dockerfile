@@ -21,8 +21,8 @@ VOLUME ["/var/www/platformmanager/data"]
 
 # Install packages and PHP-extensions
 RUN apt-get -q update && \
-    DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install wget nano at && \
-    docker-php-ext-install pdo pdo_mysql mysqli git && \
+    DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install wget nano at git && \
+    docker-php-ext-install pdo pdo_mysql mysqli && \
     a2enmod rewrite && \
     rm -rf /var/lib/apt/lists/* && \
     touch /var/log/php_errors.log && \
