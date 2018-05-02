@@ -22,6 +22,8 @@ VOLUME ["/var/www/platformmanager/data"]
 # Install packages and PHP-extensions
 RUN apt-get -q update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install wget nano at git && \
+    BUILD_DEPS="libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libxpm-dev re2c zlib1g-dev" && \
+    DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install $BUILD_DEPS && \
     docker-php-ext-configure gd \
     --with-jpeg-dir=/usr/lib/x86_64-linux-gnu --with-png-dir=/usr/lib/x86_64-linux-gnu \
     --with-xpm-dir=/usr/lib/x86_64-linux-gnu --with-freetype-dir=/usr/lib/x86_64-linux-gnu && \
@@ -29,7 +31,9 @@ RUN apt-get -q update && \
     a2enmod rewrite && \
     rm -rf /var/lib/apt/lists/* && \
     touch /var/log/php_errors.log && \
-    chown www-data /var/log/php_errors.log
+    chown www-data /var/log/php_errors.log && \
+    apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false $BUILD_DEPS && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
     && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
