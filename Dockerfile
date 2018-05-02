@@ -21,8 +21,9 @@ VOLUME ["/var/www/platformmanager/data"]
 
 # Install packages and PHP-extensions
 RUN apt-get -q update && \
-    DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install wget nano at git && \
-    BUILD_DEPS="libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libxpm-dev re2c zlib1g-dev" && \
+    DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install wget nano at git \
+    libfreetype6 libjpeg62 libpng16-16 libx11-6 libxpm4 && \
+    BUILD_DEPS="libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libxpm-dev zlib1g-dev" && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install $BUILD_DEPS && \
     docker-php-ext-configure gd \
     --with-jpeg-dir=/usr/lib/x86_64-linux-gnu --with-png-dir=/usr/lib/x86_64-linux-gnu \
