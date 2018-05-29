@@ -43,10 +43,11 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
     && rm -f /tmp/composer-setup.*
 
 ADD php_logs.ini /usr/local/etc/php/conf.d/php_logs.ini
+ADD php_timezone.ini /usr/local/etc/php/conf.d/tz.ini
 ADD apache2/platformmanager.conf /etc/apache2/conf-enabled/platformmanager.conf
 
 # install Platform-Manager sources
-RUN git clone git@github.com:bgo-bioimagerie/platformmanager.git /tmp/platformmanager_git \
+RUN git clone https://github.com/bgo-bioimagerie/platformmanager.git /tmp/platformmanager_git \
   && cd /tmp/platformmanager_git \
   && git checkout a1e29979aa4510901a67be527c00845a8b12d2cb \
   && cp -r /tmp/platformmanager_git/* /var/www/platformmanager \
