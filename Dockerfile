@@ -22,13 +22,13 @@ VOLUME ["/var/www/platformmanager/data"]
 # Install packages and PHP-extensions
 RUN apt-get -q update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install wget nano at git \
-    libfreetype6 libjpeg62 libpng12-0 libx11-6 libxpm4 && \
+    libfreetype6 libjpeg62 libpng12-0 libx11-6 libxpm4 zlib1g-dev && \
     BUILD_DEPS="libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libxpm-dev zlib1g-dev" && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install $BUILD_DEPS && \
     docker-php-ext-configure gd \
     --with-jpeg-dir=/usr/lib/x86_64-linux-gnu --with-png-dir=/usr/lib/x86_64-linux-gnu \
     --with-xpm-dir=/usr/lib/x86_64-linux-gnu --with-freetype-dir=/usr/lib/x86_64-linux-gnu && \
-    docker-php-ext-install gd pdo pdo_mysql mysqli && \
+    docker-php-ext-install gd pdo pdo_mysql mysqli zip && \
     a2enmod rewrite && \
     rm -rf /var/lib/apt/lists/* && \
     touch /var/log/php_errors.log && \
@@ -46,11 +46,10 @@ ADD php_logs.ini /usr/local/etc/php/conf.d/php_logs.ini
 ADD apache2/platformmanager.conf /etc/apache2/conf-enabled/platformmanager.conf
 
 # install Platform-Manager sources
-RUN wget https://github.com/bgo-bioimagerie/platformmanager/archive/V1.2.tar.gz \
-  && tar -xzvf V1.2.tar.gz \
-  && cp -r platformmanager-1.2/* /var/www/platformmanager \
-  && cp platformmanager-1.2/.htaccess /var/www/platformmanager \
-  && rm -rf V1.2.tar.gz platformmanager-1.2 \
+RUN git clone git@github.com:bgo-bioimagerie/platformmanager.git platformmanager \
+  && cd platformmanager \
+  && git checkout a1e29979aa4510901a67be527c00845a8b12d2cb \
+  && cd .. \
   && mkdir platformmanager/tmp \
   && chown -R www-data: platformmanager \
   && rm -rf html \
