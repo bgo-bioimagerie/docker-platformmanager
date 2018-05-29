@@ -49,7 +49,7 @@ ADD apache2/platformmanager.conf /etc/apache2/conf-enabled/platformmanager.conf
 # install Platform-Manager sources
 RUN git clone https://github.com/bgo-bioimagerie/platformmanager.git /tmp/platformmanager_git \
   && cd /tmp/platformmanager_git \
-  && git checkout a1e29979aa4510901a67be527c00845a8b12d2cb \
+  && git checkout 7f2e47a3ebe0b833c0743070637dc9332b7b2cf3 \
   && cp -r /tmp/platformmanager_git/* /var/www/platformmanager \
   && cp /tmp/platformmanager_git/.htaccess /var/www/platformmanager \
   && rm -rf /tmp/platformmanager_git \
