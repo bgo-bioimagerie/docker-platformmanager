@@ -46,10 +46,13 @@ ADD php_logs.ini /usr/local/etc/php/conf.d/php_logs.ini
 ADD apache2/platformmanager.conf /etc/apache2/conf-enabled/platformmanager.conf
 
 # install Platform-Manager sources
-RUN git clone git@github.com:bgo-bioimagerie/platformmanager.git platformmanager \
-  && cd platformmanager \
+RUN git clone git@github.com:bgo-bioimagerie/platformmanager.git /tmp/platformmanager_git \
+  && cd /tmp/platformmanager_git \
   && git checkout a1e29979aa4510901a67be527c00845a8b12d2cb \
-  && cd .. \
+  && cp -r /tmp/platformmanager_git/* /var/www/platformmanager \
+  && cp /tmp/platformmanager_git/.htaccess /var/www/platformmanager \
+  && rm -rf /tmp/platformmanager_git \
+  && cd /var/www/ \
   && mkdir platformmanager/tmp \
   && chown -R www-data: platformmanager \
   && rm -rf html \
