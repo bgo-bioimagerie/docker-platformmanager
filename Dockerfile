@@ -17,7 +17,7 @@ MAINTAINER Sylvain Prigent <sylvain.prigent@univ-rennes1.fr>
 
 WORKDIR /var/www
 
-# VOLUME ["/var/www/platformmanager/data"]
+VOLUME ["/var/www/platformmanager/data"]
 
 # Install packages and PHP-extensions
 RUN apt-get -q update && \
@@ -52,7 +52,7 @@ RUN mkdir -p /var/www/platformmanager \
 # install Platform-Manager sources
 RUN git clone https://github.com/bgo-bioimagerie/platformmanager.git /tmp/platformmanager_git \
   && cd /tmp/platformmanager_git \
-  && git checkout b9e1165a426ed7e137a113eb7becbd7368e12631 \
+  && git checkout dea112894b64007d5096b480163f9234413463d3 \
   && cp -r /tmp/platformmanager_git/data /opt \
   && cp -r /tmp/platformmanager_git/* /var/www/platformmanager \
   && cp /tmp/platformmanager_git/.htaccess /var/www/platformmanager \
