@@ -46,10 +46,14 @@ ADD php_logs.ini /usr/local/etc/php/conf.d/php_logs.ini
 ADD php_timezone.ini /usr/local/etc/php/conf.d/tz.ini
 ADD apache2/platformmanager.conf /etc/apache2/conf-enabled/platformmanager.conf
 
+RUN mkdir -p /var/www/platformmanager \
+    && chown -R www-data /var/www/platformmanager
+
 # install Platform-Manager sources
 RUN git clone https://github.com/bgo-bioimagerie/platformmanager.git /tmp/platformmanager_git \
   && cd /tmp/platformmanager_git \
-  && git checkout 6ed40333422f069b1c5209d00aa7db22f1ace0c2 \
+  && git checkout dea112894b64007d5096b480163f9234413463d3 \
+  && cp -r /tmp/platformmanager_git/data /opt \
   && cp -r /tmp/platformmanager_git/* /var/www/platformmanager \
   && cp /tmp/platformmanager_git/.htaccess /var/www/platformmanager \
   && cp -r /tmp/platformmanager_git/.git /var/www/platformmanager \

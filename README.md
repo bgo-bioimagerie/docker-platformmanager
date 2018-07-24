@@ -16,7 +16,7 @@ services:
     image: quay.io/bgo_bioimagerie/platformmanager:latest
     environment:
         MYSQL_HOST: mysql # Host of the mysql server
-        MYSQL_DBNAME: platformmanager # name of the database on the mysql server
+        MYSQL_DBNAME: platform_manager # name of the database on the mysql server
         MYSQL_USER: platform_manager # Admin account to connect to mysql
         MYSQL_PASS: platform_manager # Password to connect to mysql
         SMTP_HOST: some.smtp.host # The hostname of an SMTP server to send emails
@@ -36,7 +36,7 @@ services:
     image: quay.io/bgo_bioimagerie/platformmanager:latest
     environment:
         MYSQL_HOST: mysql # Host of the mysql server
-        MYSQL_DBNAME: platformmanager # name of the database on the mysql server
+        MYSQL_DBNAME: platform_manager # name of the database on the mysql server
         MYSQL_USER: platform_manager # Admin account to connect to mysql
         MYSQL_PASS: platform_manager # Password to connect to mysql
         SMTP_HOST: some.smtp.host # The hostname of an SMTP server to send emails
@@ -56,5 +56,7 @@ services:
         MYSQL_PASSWORD: platform_manager
         MYSQL_ROOT_PASSWORD: platform_manager
     volumes:
-       -./data/mysql_data:/var/lib/mysql # Mount the mysql data directory and backup it
+       - ./data/mysql_data:/var/lib/mysql # Mount the mysql data directory and backup it
 ```
+
+See [./docker-compose.yml](docker-compose.yml) for another example for development purpose.
