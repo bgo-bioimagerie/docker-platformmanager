@@ -58,3 +58,5 @@ services:
     volumes:
        - ./data/mysql_data:/var/lib/mysql # Mount the mysql data directory and backup it
 ```
+
+See [./docker-compose.yml](docker-compose.yml) for another example for development purpose.
