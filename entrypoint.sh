@@ -15,8 +15,9 @@ unset MYSQL_PASS
 
 if [ ! -e /var/www/platformmanager/data/core ]; then
     cp -r /opt/data/* /var/www/platformmanager/data/
-    chown -R www-data /var/www/platformmanager/data
 fi
+
+chown -R www-data /var/www/platformmanager/data
 
 # Run the database update script in a few seconds
 echo "sleep 10; curl http://localhost/caches > /var/log/startup_db_caches.log; curl http://localhost/update > /var/log/startup_db_update.log" | at now
