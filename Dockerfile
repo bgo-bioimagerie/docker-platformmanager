@@ -52,7 +52,7 @@ RUN mkdir -p /var/www/platformmanager \
 # install Platform-Manager sources
 RUN git clone https://github.com/bgo-bioimagerie/platformmanager.git /tmp/platformmanager_git \
   && cd /tmp/platformmanager_git \
-  && git checkout b5c4e7dd406269fb433eddfdb0af45d5780a2bb2 \
+  && git checkout 4831de78f113c58fada17b3ede39a0f6e1729fab \
   && cp -r /tmp/platformmanager_git/data /opt \
   && cp -r /tmp/platformmanager_git/* /var/www/platformmanager \
   && cp /tmp/platformmanager_git/.htaccess /var/www/platformmanager \
