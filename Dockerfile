@@ -1,6 +1,6 @@
 FROM php:5.6-apache
 
-MAINTAINER Sylvain Prigent <sylvain.prigent@univ-rennes1.fr>
+MAINTAINER GenOuest <support@genouest.org>
 
 # ENV TINI_VERSION v0.9.0
 # RUN set -x \
