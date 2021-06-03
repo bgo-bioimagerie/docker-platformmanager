@@ -30,6 +30,7 @@ RUN apt-get -q update && \
     --with-xpm-dir=/usr/lib/x86_64-linux-gnu --with-freetype-dir=/usr/lib/x86_64-linux-gnu && \
     docker-php-ext-install gd pdo pdo_mysql mysqli zip && \
     a2enmod rewrite && \
+    a2enmod headers && \
     rm -rf /var/lib/apt/lists/* && \
     touch /var/log/php_errors.log && \
     chown www-data /var/log/php_errors.log && \
