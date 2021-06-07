@@ -1,4 +1,5 @@
-FROM php:7.3-apache
+#FROM php:7.3-apache
+FROM php:8-apache
 
 MAINTAINER GenOuest <support@genouest.org>
 
@@ -22,13 +23,13 @@ VOLUME ["/var/www/platformmanager/data"]
 # Install packages and PHP-extensions
 RUN apt-get -q update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install wget nano vim at git \
-    libfreetype6 libjpeg62 libpng16-16 libx11-6 libxpm4 zlib1g-dev libzip4 && \
+    libfreetype6 libjpeg62 libpng16-16 libx11-6 libxpm4 zlib1g-dev libzip4 libldap2-dev && \
     BUILD_DEPS="libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libxpm-dev zlib1g-dev libzip-dev" && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install $BUILD_DEPS && \
     docker-php-ext-configure gd \
-    --with-jpeg-dir=/usr/lib/x86_64-linux-gnu --with-png-dir=/usr/lib/x86_64-linux-gnu \
-    --with-xpm-dir=/usr/lib/x86_64-linux-gnu --with-freetype-dir=/usr/lib/x86_64-linux-gnu && \
-    docker-php-ext-install gd pdo pdo_mysql mysqli zip && \
+    --with-jpeg \
+    --with-xpm --with-freetype && \
+    docker-php-ext-install gd pdo pdo_mysql mysqli zip ldap && \
     a2enmod rewrite && \
     a2enmod headers && \
     rm -rf /var/lib/apt/lists/* && \
