@@ -23,15 +23,17 @@ VOLUME ["/var/www/platformmanager/data"]
 # Install packages and PHP-extensions
 RUN apt-get -q update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install wget nano vim at git \
-    libfreetype6 libjpeg62 libpng16-16 libx11-6 libxpm4 zlib1g-dev libzip4 libldap2-dev && \
-    BUILD_DEPS="libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libxpm-dev zlib1g-dev libzip-dev" && \
+    libfreetype6 libjpeg62 libpng16-16 libx11-6 libxpm4 zlib1g-dev libzip4 libldap2-dev libc-client2007e libkrb5-3 && \
+    BUILD_DEPS="libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libxpm-dev zlib1g-dev libzip-dev libc-client2007e-dev libkrb5-dev" && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install $BUILD_DEPS && \
+    docker-php-ext-configure imap --with-imap-ssl --with-kerberos && \
     docker-php-ext-configure gd \
     --with-jpeg \
     --with-xpm --with-freetype && \
-    docker-php-ext-install gd pdo pdo_mysql mysqli zip ldap && \
+    docker-php-ext-install gd pdo pdo_mysql mysqli zip ldap imap && \
     a2enmod rewrite && \
     a2enmod headers && \
+    a2enmod proxy_http && \
     rm -rf /var/lib/apt/lists/* && \
     touch /var/log/php_errors.log && \
     chown www-data /var/log/php_errors.log && \
