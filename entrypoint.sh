@@ -15,4 +15,6 @@ chown -R www-data:www-data /var/www/platformmanager/data
 echo "sleep 10; curl http://localhost/caches > /var/log/startup_db_caches.log; curl http://localhost/update > /var/log/startup_db_update.log" | at now
 #echo "sleep 10; cd /var/www/platformmanger && php cli/pfm-cli.php --install > /var/log/startup_db_update.log" | at now
 
+/wait
+
 exec apache2-foreground
