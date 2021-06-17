@@ -3,28 +3,16 @@ set -e
 
 service atd start
 
-cp /etc/platformmanager/conf.ini.sample /var/www/platformmanager/Config/conf.ini
-sed -i "s/MYSQL_URL/${MYSQL_HOST}/g" /var/www/platformmanager/Config/conf.ini
-sed -i "s/MYSQL_DBNAME/${MYSQL_DBNAME}/g" /var/www/platformmanager/Config/conf.ini
-sed -i "s/MYSQL_USER/${MYSQL_USER}/g" /var/www/platformmanager/Config/conf.ini
-sed -i "s/MYSQL_PASS/${MYSQL_PASS}/g" /var/www/platformmanager/Config/conf.ini
-
-if [ "a${PFM_MODE}" = "adev" ]; then
-   sed -i "s/ini_set('display_errors', 0);/ini_set('display_errors', 1);/g" /var/www/platformmanager/index.php
-   sed -i "s/error_reporting(0)/error_reporting(E_ALL)/g" /var/www/platformmanager/index.php
-fi
-
-# make sure this is not accessible from the webapp (no risk of leak)
-unset MYSQL_USER
-unset MYSQL_PASS
-
 if [ ! -e /var/www/platformmanager/data/core ]; then
     cp -r /opt/data/* /var/www/platformmanager/data/
 fi
+
+/setup.sh
 
 chown -R www-data:www-data /var/www/platformmanager/data
 
 # Run the database update script in a few seconds
 echo "sleep 10; curl http://localhost/caches > /var/log/startup_db_caches.log; curl http://localhost/update > /var/log/startup_db_update.log" | at now
+#echo "sleep 10; cd /var/www/platformmanger && php cli/pfm-cli.php --install > /var/log/startup_db_update.log" | at now
 
 exec apache2-foreground

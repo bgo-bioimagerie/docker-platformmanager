@@ -22,7 +22,7 @@ VOLUME ["/var/www/platformmanager/data"]
 
 # Install packages and PHP-extensions
 RUN apt-get -q update && \
-    DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install wget nano vim at git \
+    DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install wget nano vim at git unzip \
     libfreetype6 libjpeg62 libpng16-16 libx11-6 libxpm4 zlib1g-dev libzip4 libldap2-dev libc-client2007e libkrb5-3 && \
     BUILD_DEPS="libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libxpm-dev zlib1g-dev libzip-dev libc-client2007e-dev libkrb5-dev" && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install $BUILD_DEPS && \
@@ -30,7 +30,7 @@ RUN apt-get -q update && \
     docker-php-ext-configure gd \
     --with-jpeg \
     --with-xpm --with-freetype && \
-    docker-php-ext-install gd pdo pdo_mysql mysqli zip ldap imap && \
+    docker-php-ext-install gd pdo pdo_mysql mysqli zip ldap imap sockets && \
     a2enmod rewrite && \
     a2enmod headers && \
     a2enmod proxy_http && \
@@ -82,7 +82,11 @@ ENV MYSQL_HOST="mysql" \
     MYSQL_PASS="password"
 
 ADD entrypoint.sh /
+ADD pfmevent-entrypoint.sh /
+ADD setup.sh /
 
 RUN chmod a+x /entrypoint.sh
+RUN chmod a+x /pfmevent-entrypoint.sh
+RUN chmod a+x /setup.sh
 
 CMD ["/entrypoint.sh"]
