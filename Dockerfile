@@ -70,11 +70,7 @@ RUN git clone https://github.com/bgo-bioimagerie/platformmanager.git /tmp/platfo
   && mkdir -p /etc/platformmanager \
   && cp platformmanager/Config/conf.ini.sample /etc/platformmanager/
 
-RUN cd /var/www/platformmanager/externals/html2pdf \
-  && composer install \
-  && cd /var/www/
-
-RUN cd /var/www/platformmanager && composer install
+RUN cd /var/www/platformmanager && composer install --ignore-platform-reqs
 
 ENV MYSQL_HOST="mysql" \
     MYSQL_DBNAME="platformmanager" \
