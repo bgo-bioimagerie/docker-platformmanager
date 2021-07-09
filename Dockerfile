@@ -92,4 +92,6 @@ RUN chmod a+x /setup.sh
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.6.0/wait /wait
 RUN chmod +x /wait
 
+RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
+
 CMD ["/entrypoint.sh"]

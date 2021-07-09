@@ -1,18 +1,58 @@
 version: "3"
 services:
+  pfm-events:
+    image: quay.io/bgo_bioimagerie/platformmanager:latest
+    environment:
+      WAIT_HOSTS: pfm-rabbitmq:5672,mysql:3306
+      MYSQL_HOST: mysql # Host of the the mysql server
+      MYSQL_DBNAME: platformmanager # name of the database on the mysql server
+      MYSQL_USER: platform_manager # Admin account to connect to mysql
+      MYSQL_PASS: ${MYSQL_PASSWORD} # Password to connect to mysql
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+      MAIL_FROM: support@genouest.org
+      PFM_PUBLIC_URL: ${PFM_WEB_URL}
+      PFM_AMQP_HOST: pfm-rabbitmq
+      PFM_AMQP_USER: pfm
+      PFM_AMQP_PASSWORD: pfm
+      PFM_INFLUXDB_URL: http://influxdb:8086
+      PFM_INFLUXDB_TOKEN: ${PFM_INFLUXDB_TOKEN}
+      PFM_INFLUXDB_ORG: pfm
+    depends_on:
+        - mysql
+        - pfm-rabbitmq
+        - influxdb
+    volumes:
+      - ./data:/var/www/platformmanager/data # Mount the application data directory
+    working_dir: /var/www/platformmanager
+    entrypoint: ["/pfmevent-entrypoint.sh"]
+
   pfm:
     image: quay.io/bgo_bioimagerie/platformmanager:latest
     environment:
-        MYSQL_HOST: mysql # Host of the the mysql server
-        MYSQL_DBNAME: platformmanager # name of the database on the mysql server
-        MYSQL_USER: platform_manager # Admin account to connect to mysql
-        MYSQL_PASS: ${MYSQL_PASSWORD} # Password to connect to mysql
-        SMTP_HOST: mailhog
-        SMTP_PORT: 1025
-        MAIL_FROM: support@genouest.org
+      WAIT_HOSTS: pfm-rabbitmq:5672,mysql:3306
+      MYSQL_HOST: mysql # Host of the the mysql server
+      MYSQL_DBNAME: platformmanager # name of the database on the mysql server
+      MYSQL_USER: platform_manager # Admin account to connect to mysql
+      MYSQL_PASS: ${MYSQL_PASSWORD} # Password to connect to mysql
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+      MAIL_FROM: support@genouest.org
+      PFM_ADMIN_USER: pfmadmin
+      PFM_ADMIN_EMAIL: support@genouest.org
+      PFM_ADMIN_PASSWORD: ${PFM_ADMIN_PASSWORD}
+      PFM_ADMIN_APIKEY: ${PFM_ADMIN_APIKEY}
+      PFM_PUBLIC_URL: ${PFM_WEB_URL}
+      PFM_AMQP_HOST: pfm-rabbitmq
+      PFM_AMQP_USER: pfm
+      PFM_AMQP_PASSWORD: pfm
+      PFM_INFLUXDB_URL: http://influxdb:8086
+      PFM_INFLUXDB_TOKEN: ${PFM_INFLUXDB_TOKEN}
+      PFM_INFLUXDB_ORG: pfm
     depends_on:
         - mysql
-        - mailhog
+        - pfm-rabbitmq
+        - influxdb
     volumes:
       - ./data:/var/www/platformmanager/data # Mount the application data directory
     ports:
@@ -23,10 +63,36 @@ services:
     ports:
         - "8025:8025"
 
-  mysql:
-    image: mysql:5.5
+  pfm-rabbitmq:
+    image: rabbitmq
+    hostname: pfm-rabbitmq
     environment:
-        MYSQL_DATABASE: platformmanager
+        - RABBITMQ_DEFAULT_USER=pfm
+        - RABBITMQ_DEFAULT_PASS=pfm
+
+  influxdb:
+    image: influxdb:2.0
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: pfmadmin
+      DOCKER_INFLUXDB_INIT_PASSWORD: ${PFM_ADMIN_PASSWORD}
+      DOCKER_INFLUXDB_INIT_ORG: pfm
+      DOCKER_INFLUXDB_INIT_BUCKET: pfm
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${PFM_INFLUXDB_TOKEN}
+    volumes:
+      - ./influxdb-data:/var/lib/influxdb2
+      - ./influxdb-cfg:/etc/influxdb2
+
+  mysql:
+    image: mysql:8
+    environment:
+        MYSQL_DATABASE: platform_manager
         MYSQL_USER: platform_manager
         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    command: --sql-mode=""
+
