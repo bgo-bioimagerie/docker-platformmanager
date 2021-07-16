@@ -1,7 +1,7 @@
 version: "3"
 services:
   pfm-events:
-    image: quay.io/bgo_bioimagerie/platformmanager:latest
+    image: quay.io/genouest/pfm:2.0
     environment:
       WAIT_HOSTS: pfm-rabbitmq:5672,mysql:3306,influxdb:8086
       MYSQL_HOST: mysql # Host of the the mysql server
@@ -28,7 +28,7 @@ services:
     entrypoint: ["/pfmevent-entrypoint.sh"]
 
   pfm:
-    image: quay.io/bgo_bioimagerie/platformmanager:latest
+    image: quay.io/genouest/pfm:2.0
     environment:
       WAIT_HOSTS: pfm-rabbitmq:5672,mysql:3306,influxdb:8086
       MYSQL_HOST: mysql # Host of the the mysql server
