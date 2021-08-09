@@ -25,7 +25,7 @@ services:
     volumes:
       - ./data:/var/www/platformmanager/data # Mount the application data directory
     working_dir: /var/www/platformmanager
-    entrypoint: ["/pfmevent-entrypoint.sh"]
+    entrypoint: ["/pfmextra-entrypoint.sh", "events"]
 
   pfm:
     image: quay.io/genouest/pfm:2.0
