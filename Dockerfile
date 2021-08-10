@@ -78,11 +78,11 @@ ENV MYSQL_HOST="mysql" \
     MYSQL_PASS="password"
 
 ADD entrypoint.sh /
-ADD pfmevent-entrypoint.sh /
+ADD pfmextra-entrypoint.sh /
 ADD setup.sh /
 
 RUN chmod a+x /entrypoint.sh
-RUN chmod a+x /pfmevent-entrypoint.sh
+RUN chmod a+x /pfmextra-entrypoint.sh
 RUN chmod a+x /setup.sh
 
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.6.0/wait /wait
