@@ -96,3 +96,6 @@ services:
       - ./mysql-data:/var/lib/mysql
     command: --sql-mode=""
 
+  redis:
+    image: redis
+
