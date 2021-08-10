@@ -64,7 +64,7 @@ services:
         - "8025:8025"
 
   pfm-rabbitmq:
-    image: rabbitmq
+    image: rabbitmq:3.8
     hostname: pfm-rabbitmq
     environment:
         - RABBITMQ_DEFAULT_USER=pfm
