@@ -26,6 +26,7 @@ RUN apt-get -q update && \
     libfreetype6 libjpeg62 libpng16-16 libx11-6 libxpm4 zlib1g-dev libzip4 libldap2-dev libc-client2007e libkrb5-3 && \
     BUILD_DEPS="libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev libxpm-dev zlib1g-dev libzip-dev libc-client2007e-dev libkrb5-dev" && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install $BUILD_DEPS && \
+    pecl install redis && docker-php-ext-enable redis && \
     docker-php-ext-configure imap --with-imap-ssl --with-kerberos && \
     docker-php-ext-configure gd \
     --with-jpeg \

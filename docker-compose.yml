@@ -18,6 +18,10 @@ services:
       PFM_INFLUXDB_URL: http://influxdb:8086
       PFM_INFLUXDB_TOKEN: ${PFM_INFLUXDB_TOKEN}
       PFM_INFLUXDB_ORG: pfm
+      PFM_REDIS_HOST: redis
+      PFM_GRAFANA_URL: http://grafana:3000
+      PFM_GRAFANA_USER: admin
+      PFM_GRAFANA_PASSWORD: ${PFM_ADMIN_PASSWORD}
     depends_on:
         - mysql
         - pfm-rabbitmq
@@ -49,6 +53,14 @@ services:
       PFM_INFLUXDB_URL: http://influxdb:8086
       PFM_INFLUXDB_TOKEN: ${PFM_INFLUXDB_TOKEN}
       PFM_INFLUXDB_ORG: pfm
+      PFM_REDIS_HOST: redis
+      PFM_ALLOW_REGISTRATION: 0
+      PFM_JWT_SECRET: 123456
+      PFM_REDIS_HOST: redis
+      PFM_GRAFANA_URL: http://grafana:3000
+      PFM_GRAFANA_USER: admin
+      PFM_GRAFANA_PASSWORD: ${PFM_ADMIN_PASSWORD}
+      PFM_OPENID: ${PFM_OPENID}
     depends_on:
         - mysql
         - pfm-rabbitmq
@@ -57,11 +69,6 @@ services:
       - ./data:/var/www/platformmanager/data # Mount the application data directory
     ports:
       - "3000:80"
-
-  mailhog:
-    image: mailhog/mailhog
-    ports:
-        - "8025:8025"
 
   pfm-rabbitmq:
     image: rabbitmq:3.8
