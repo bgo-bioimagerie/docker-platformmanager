@@ -1,7 +1,47 @@
 version: "3"
 services:
+  pfm-helpdesk:
+    image: quay.io/genouest/pfm:2.1
+    depends_on:
+      - mysql
+      - pfm-rabbitmq
+      - influxdb
+    environment:
+      WAIT_HOSTS: pfm-rabbitmq:5672,mysql:3306
+      MYSQL_HOST: mysql 
+      MYSQL_DBNAME: platform_manager
+      MYSQL_USER: platform_manager
+      MYSQL_PASS: ${MYSQL_PASSWORD}
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+      MAIL_FROM: support@genouest.org
+      DEBUG: 1
+      DEBUG_SQL: 1
+      PFM_MODE: dev
+      PFM_PUBLIC_URL: ${PFM_WEB_URL}
+      PFM_AMQP_HOST: pfm-rabbitmq
+      PFM_AMQP_USER: pfm
+      PFM_AMQP_PASSWORD: pfm
+      PFM_INFLUXDB_URL: http://influxdb:8086
+      PFM_INFLUXDB_TOKEN: ${PFM_INFLUXDB_TOKEN}
+      PFM_INFLUXDB_ORG: pfm
+      PFM_HELPDESK_EMAIL: ${PFM_HELPDESK_EMAIL}
+      PFM_HELPDESK_IMAP_SERVER: ${PFM_HELPDESK_IMAP_SERVER}
+      PFM_HELPDESK_IMAP_PORT: 110
+      PFM_HELPDESK_IMAP_USER: ${PFM_HELPDESK_IMAP_USER}
+      PFM_HELPDESK_IMAP_PASSWORD: ${PFM_HELPDESK_IMAP_PASSWORD}
+      PFM_HELPDESK_IMAP_TLS:
+    working_dir: /var/www/platformmanager
+    entrypoint: ["/pfmextra-entrypoint.sh", "helpdesk"]
+    depends_on:
+        - mysql
+        - pfm-rabbitmq
+        - influxdb
+    volumes:
+      - ./data:/var/www/platformmanager/data # Mount the application data directory
+
   pfm-events:
-    image: quay.io/genouest/pfm:2.0
+    image: quay.io/genouest/pfm:2.1
     environment:
       WAIT_HOSTS: pfm-rabbitmq:5672,mysql:3306,influxdb:8086
       MYSQL_HOST: mysql # Host of the the mysql server
@@ -22,6 +62,12 @@ services:
       PFM_GRAFANA_URL: http://grafana:3000
       PFM_GRAFANA_USER: admin
       PFM_GRAFANA_PASSWORD: ${PFM_ADMIN_PASSWORD}
+      PFM_HELPDESK_EMAIL: ${PFM_HELPDESK_EMAIL}
+      PFM_HELPDESK_IMAP_SERVER: ${PFM_HELPDESK_IMAP_SERVER}
+      PFM_HELPDESK_IMAP_PORT: 110
+      PFM_HELPDESK_IMAP_USER: ${PFM_HELPDESK_IMAP_USER}
+      PFM_HELPDESK_IMAP_PASSWORD: ${PFM_HELPDESK_IMAP_PASSWORD}
+      PFM_HELPDESK_IMAP_TLS:
     depends_on:
         - mysql
         - pfm-rabbitmq
@@ -32,7 +78,7 @@ services:
     entrypoint: ["/pfmextra-entrypoint.sh", "events"]
 
   pfm:
-    image: quay.io/genouest/pfm:2.0
+    image: quay.io/genouest/pfm:2.1
     environment:
       WAIT_HOSTS: pfm-rabbitmq:5672,mysql:3306,influxdb:8086
       MYSQL_HOST: mysql # Host of the the mysql server
@@ -61,6 +107,12 @@ services:
       PFM_GRAFANA_USER: admin
       PFM_GRAFANA_PASSWORD: ${PFM_ADMIN_PASSWORD}
       PFM_OPENID: ${PFM_OPENID}
+      PFM_HELPDESK_EMAIL: ${PFM_HELPDESK_EMAIL}
+      PFM_HELPDESK_IMAP_SERVER: ${PFM_HELPDESK_IMAP_SERVER}
+      PFM_HELPDESK_IMAP_PORT: 110
+      PFM_HELPDESK_IMAP_USER: ${PFM_HELPDESK_IMAP_USER}
+      PFM_HELPDESK_IMAP_PASSWORD: ${PFM_HELPDESK_IMAP_PASSWORD}
+      PFM_HELPDESK_IMAP_TLS:
     depends_on:
         - mysql
         - pfm-rabbitmq
