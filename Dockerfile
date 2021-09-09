@@ -1,7 +1,10 @@
 #FROM php:7.3-apache
 FROM php:8-apache
 
-MAINTAINER GenOuest <support@genouest.org>
+LABEL author="GenOuest <support@genouest.org>" \
+      description="Image for platform manager processes" \
+      org.irisa.genouest.vendor="2021 IRISA" \
+      homepage="https://github.com/bgo-bioimagerie/platformmanager"
 
 # ENV TINI_VERSION v0.9.0
 # RUN set -x \
@@ -54,10 +57,12 @@ ADD apache2/platformmanager.conf /etc/apache2/conf-enabled/platformmanager.conf
 RUN mkdir -p /var/www/platformmanager \
     && chown -R www-data /var/www/platformmanager
 
+ARG BRANCH=master
+
 # install Platform-Manager sources
 RUN git clone https://github.com/bgo-bioimagerie/platformmanager.git /tmp/platformmanager_git \
   && cd /tmp/platformmanager_git \
-# && git checkout pfm2 \
+  && git checkout $BRANCH \
   && cp -r /tmp/platformmanager_git/data /opt \
   && cp -r /tmp/platformmanager_git/* /var/www/platformmanager \
   && cp /tmp/platformmanager_git/.htaccess /var/www/platformmanager \

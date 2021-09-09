@@ -3,6 +3,12 @@
 This image contains everything needed to create an instance of Platform-Manager
 using an external mysql database
 
+## Building
+
+Specify to docker the build arg BRANCH (defaults to master)
+
+   docker build --build-arg BRANCH=master ...
+
 ## Using the Container
 
 We highly recommend using a `docker-compose.yml` to run your containers.
