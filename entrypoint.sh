@@ -17,4 +17,5 @@ chown -R www-data:www-data /var/www/platformmanager/data
 
 /wait
 
+cd /var/www/platformmanager && php cli/pfm-cli.php routes --reload
 exec apache2-foreground
