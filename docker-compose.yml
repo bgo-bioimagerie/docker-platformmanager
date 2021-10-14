@@ -157,4 +157,7 @@ services:
 
   redis:
     image: redis
+    volumes:
+      - ./redis:/data
+    command: ["--save", "60", "1", "--loglevel", "warning"]
 
