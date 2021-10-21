@@ -1,7 +1,7 @@
 version: "3"
 services:
   pfm-helpdesk:
-    image: quay.io/genouest/pfm:2.1.4
+    image: quay.io/genouest/pfm:2.1.6
     depends_on:
       - mysql
       - pfm-rabbitmq
@@ -41,7 +41,7 @@ services:
       - ./data:/var/www/platformmanager/data # Mount the application data directory
 
   pfm-events:
-    image: quay.io/genouest/pfm:2.1.4
+    image: quay.io/genouest/pfm:2.1.6
     environment:
       WAIT_HOSTS: pfm-rabbitmq:5672,mysql:3306,influxdb:8086
       MYSQL_HOST: mysql # Host of the the mysql server
@@ -78,7 +78,7 @@ services:
     entrypoint: ["/pfmextra-entrypoint.sh", "events"]
 
   pfm:
-    image: quay.io/genouest/pfm:2.1.4
+    image: quay.io/genouest/pfm:2.1.6
     environment:
       WAIT_HOSTS: pfm-rabbitmq:5672,mysql:3306,influxdb:8086
       MYSQL_HOST: mysql # Host of the the mysql server
