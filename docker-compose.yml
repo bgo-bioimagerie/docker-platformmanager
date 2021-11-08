@@ -14,7 +14,7 @@ services:
       MYSQL_PASS: ${MYSQL_PASSWORD}
       SMTP_HOST: mailhog
       SMTP_PORT: 1025
-      MAIL_FROM: support@genouest.org
+      SMTP_FROM: support@genouest.org
       DEBUG: 1
       DEBUG_SQL: 1
       PFM_MODE: dev
@@ -50,7 +50,7 @@ services:
       MYSQL_PASS: ${MYSQL_PASSWORD} # Password to connect to mysql
       SMTP_HOST: mailhog
       SMTP_PORT: 1025
-      MAIL_FROM: support@genouest.org
+      SMTP_FROM: support@genouest.org
       PFM_PUBLIC_URL: ${PFM_WEB_URL}
       PFM_AMQP_HOST: pfm-rabbitmq
       PFM_AMQP_USER: pfm
@@ -87,7 +87,7 @@ services:
       MYSQL_PASS: ${MYSQL_PASSWORD} # Password to connect to mysql
       SMTP_HOST: mailhog
       SMTP_PORT: 1025
-      MAIL_FROM: support@genouest.org
+      SMTP_FROM: support@genouest.org
       PFM_ADMIN_USER: pfmadmin
       PFM_ADMIN_EMAIL: support@genouest.org
       PFM_ADMIN_PASSWORD: ${PFM_ADMIN_PASSWORD}
