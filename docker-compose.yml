@@ -1,7 +1,9 @@
 version: "3"
 services:
   pfm-helpdesk:
-    image: quay.io/genouest/pfm:2.2
+    image: quay.io/genouest/pfm
+    build:
+      context: .
     depends_on:
       - mysql
       - pfm-rabbitmq
@@ -12,9 +14,9 @@ services:
       MYSQL_DBNAME: platform_manager
       MYSQL_USER: platform_manager
       MYSQL_PASS: ${MYSQL_PASSWORD}
-      SMTP_HOST: mailhog
+      SMTP_HOST: ${PFM_SMTP_HOST}
       SMTP_PORT: 1025
-      SMTP_FROM: support@genouest.org
+      SMTP_FROM: ${PFM_SMTP_FROM}
       DEBUG: 1
       DEBUG_SQL: 1
       PFM_MODE: dev
@@ -41,16 +43,18 @@ services:
       - ./data:/var/www/platformmanager/data # Mount the application data directory
 
   pfm-events:
-    image: quay.io/genouest/pfm:2.2
+    image: quay.io/genouest/pfm
+    build:
+      context: .
     environment:
       WAIT_HOSTS: pfm-rabbitmq:5672,mysql:3306,influxdb:8086
       MYSQL_HOST: mysql # Host of the the mysql server
       MYSQL_DBNAME: platformmanager # name of the database on the mysql server
       MYSQL_USER: platform_manager # Admin account to connect to mysql
       MYSQL_PASS: ${MYSQL_PASSWORD} # Password to connect to mysql
-      SMTP_HOST: mailhog
+      SMTP_HOST: ${PFM_SMTP_HOST}
       SMTP_PORT: 1025
-      SMTP_FROM: support@genouest.org
+      SMTP_FROM: ${PFM_SMTP_FROM}
       PFM_PUBLIC_URL: ${PFM_WEB_URL}
       PFM_AMQP_HOST: pfm-rabbitmq
       PFM_AMQP_USER: pfm
@@ -78,18 +82,20 @@ services:
     entrypoint: ["/pfmextra-entrypoint.sh", "events"]
 
   pfm:
-    image: quay.io/genouest/pfm:2.2
+    image: quay.io/genouest/pfm
+    build:
+      context: .
     environment:
-      WAIT_HOSTS: pfm-rabbitmq:5672,mysql:3306,influxdb:8086
+      WAIT_HOSTS: pfm-rabbitmq:5672,mysql:3306,influxdb:8086,grafana:3000
       MYSQL_HOST: mysql # Host of the the mysql server
       MYSQL_DBNAME: platformmanager # name of the database on the mysql server
       MYSQL_USER: platform_manager # Admin account to connect to mysql
       MYSQL_PASS: ${MYSQL_PASSWORD} # Password to connect to mysql
-      SMTP_HOST: mailhog
+      SMTP_HOST: ${PFM_SMTP_HOST}
       SMTP_PORT: 1025
-      SMTP_FROM: support@genouest.org
+      SMTP_FROM: ${PFM_SMTP_FROM}
       PFM_ADMIN_USER: pfmadmin
-      PFM_ADMIN_EMAIL: support@genouest.org
+      PFM_ADMIN_EMAIL: ${PFM_ADMIN_EMAIL}
       PFM_ADMIN_PASSWORD: ${PFM_ADMIN_PASSWORD}
       PFM_ADMIN_APIKEY: ${PFM_ADMIN_APIKEY}
       PFM_PUBLIC_URL: ${PFM_WEB_URL}
@@ -139,8 +145,8 @@ services:
       DOCKER_INFLUXDB_INIT_BUCKET: pfm
       DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${PFM_INFLUXDB_TOKEN}
     volumes:
-      - ./influxdb-data:/var/lib/influxdb2
-      - ./influxdb-cfg:/etc/influxdb2
+      - influxdb-data:/var/lib/influxdb2
+      - influxdb-cfg:/etc/influxdb2
 
   mysql:
     image: mysql:8
@@ -149,12 +155,37 @@ services:
         MYSQL_USER: platform_manager
         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    ports:
-      - "3306:3306"
     volumes:
-      - ./mysql-data:/var/lib/mysql
+      - mysql:/var/lib/mysql
     command: --sql-mode=""
 
   redis:
     image: redis
+    volumes:
+      - redis:/data
+    command: ["--save", "60", "1", "--loglevel", "warning"]
 
+  grafana:
+    image: grafana/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${PFM_ADMIN_PASSWORD}
+      - GF_SERVER_ROOT_URL=${PFM_WEB_URL}/grafana
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+    volumes:
+      - grafanalib:/var/lib/grafana
+      - grafanacfg:/etc/grafana
+
+volumes:
+  mysql:
+    driver: local
+  influxdb-data:
+    driver: local
+  influxdb-cfg:
+    driver: local
+  grafanalib:
+    driver: local
+  grafanacfg:
+    driver: local
+  redis:
+    driver: local
