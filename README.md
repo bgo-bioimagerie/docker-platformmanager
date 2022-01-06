@@ -1,5 +1,8 @@
 # Docker image for Platform-Manager
 
+**DEPRECATED** : this repo is deprecated, now also docker stuff is
+located in platform-manager repository in *docker* directory
+
 This image contains everything needed to create an instance of Platform-Manager
 using an external mysql database
 
